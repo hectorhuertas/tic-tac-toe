@@ -1,6 +1,6 @@
 $(document).ready(function () {
   Listeners.start();
-  startGame({target:{dataset:{size:3}}}); //for easier development
+  renderBoard({game:{size:4}}); //for easier development
 });
 
 function playTurn(e) {
@@ -8,7 +8,12 @@ function playTurn(e) {
 }
 
 function startGame(e) {
-  var size = e.target.dataset.size;
+  $.get('/api/v1/games/new')
+   .then(renderBoard);
+}
+
+function renderBoard(e) {
+  var size = e.game.size;
   var html = "";
 
   for (var i = 0; i < size; i++) {
