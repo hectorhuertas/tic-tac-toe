@@ -1,6 +1,11 @@
 $(document).ready(function () {
   Listeners.start();
+  startGame({target:{dataset:{size:3}}}); //for easier development
 });
+
+function playTurn(e) {
+  $(e.target).closest('td').empty().append('<i class="fa fa-circle-o fa-5x">');
+}
 
 function startGame(e) {
   var size = e.target.dataset.size;
