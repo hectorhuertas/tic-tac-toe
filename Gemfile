@@ -9,6 +9,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'puma'
 gem 'bootstrap', '~> 4.0.0.alpha3'
 gem "font-awesome-rails"
+gem "active_model_serializers", github: "rails-api/active_model_serializers"
 
 group :development, :test do
   gem 'pry-rails'
