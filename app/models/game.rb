@@ -4,18 +4,32 @@ class Game < ActiveRecord::Base
   validates :size, inclusion: { in: [3,4,5] }
 
   def create_board
-    self.size.times do |i|
+    size.times do |i|
       column = []
-      self.size.times { |i| column << "" }
-      self.board << column
+      size.times { |i| column << "" }
+      board << column
     end
   end
 
   def play(cell)
-    # update board
+    x = cell[0].to_i
+    y = cell[1].to_i
+    board[x][y] = 'o'
+    return score if game_over?
+    # # over || playAI
+    # over || ai
+    # # update board
     # check game end
     # play ai
     # check game end
-    'bobd'
+    {cell:'22'}
+  end
+
+  def game_over?
+    board.flatten.select {|i| i==""}.empty?
+  end
+
+  def score
+    'score'
   end
 end
