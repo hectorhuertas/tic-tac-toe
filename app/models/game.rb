@@ -15,21 +15,22 @@ class Game < ActiveRecord::Base
   end
 
   def ai_play
-    ai_move = available.sample
-    board[ai_move] = 'x'
-    save && {cell: ai_move}
+    ai_turn = {cell: available.sample}
+    board[ai_turn[:cell]] = 'x'
+    ai_turn[:over] = score if score
+    save && ai_turn
   end
 
   def available
     board.select{|k,v| v==""}.keys
   end
 
-  def game_over
+  def game_over(ai_move = nil)
     {over: score} if score
   end
 
   def score
-    draw || player_score
+    player_score || draw
   end
 
   def draw

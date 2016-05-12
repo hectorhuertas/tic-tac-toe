@@ -13,10 +13,12 @@ class GameTurnTest < ActionDispatch::IntegrationTest
 
   test 'Game returns result when game is over by draw' do
     game = Game.create(size:3)
-    game.board.each { |k,v| game.board[k] = "x" }
+    game.board = {"00"=>"", "01"=>"o", "02"=>"x",
+                  "10"=>"x", "11"=>"o", "12"=>"o",
+                  "20"=>"o", "21"=>"x", "22"=>"x"}
     game.save
 
-    get "/api/v1/games/#{game.id}/play", {cell:"01"}
+    get "/api/v1/games/#{game.id}/play", {cell:"00"}
 
     json = JSON.parse(response.body)
 

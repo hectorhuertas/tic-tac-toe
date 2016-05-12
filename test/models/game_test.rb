@@ -85,10 +85,12 @@ class GameTest < ActiveSupport::TestCase
     assert_equal game.score, -1
   end
 
-  test "Score is o when draw" do
+  test "Score is 0 when draw" do
     game = Game.create(size:3)
 
-    game.board.each { |k,v| game.board[k] = "x" }
+    game.board = {"00"=>"0", "01"=>"o", "02"=>"x",
+                  "10"=>"x", "11"=>"o", "12"=>"o",
+                  "20"=>"o", "21"=>"x", "22"=>"x"}
 
     assert_equal game.score, 0
   end
