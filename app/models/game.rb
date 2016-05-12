@@ -10,4 +10,12 @@ class Game < ActiveRecord::Base
       self.board << column
     end
   end
+
+  def play(cell)
+    # update board
+    # check game end
+    # play ai
+    # check game end
+    'bobd'
+  end
 end
