@@ -22,4 +22,14 @@ class GameTest < ActiveSupport::TestCase
     board = {"00"=>"", "01"=>"", "02"=>"", "03"=>"", "10"=>"", "11"=>"", "12"=>"", "13"=>"", "20"=>"", "21"=>"", "22"=>"", "23"=>"", "30"=>"", "31"=>"", "32"=>"", "33"=>""}
     assert_equal board, game.board
   end
+
+  test "Score is calculated" do
+    game = Game.create(size:4)
+    game.play('00')
+    game.play('01')
+    game.play('02')
+    game.play('03')
+
+    assert_equal game.score, 'bob'
+  end
 end

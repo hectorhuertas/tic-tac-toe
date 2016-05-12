@@ -29,6 +29,22 @@ class Game < ActiveRecord::Base
   end
 
   def score
-    'score'
+    player_of(winning(combinations))
+  end
+
+  def combinations
+    Board.win_combinations(size).map do |c|
+      c.map{|cell|board[cell]}
+    end
+  end
+
+  def winning(combinations)
+    combinations.select do |c|
+      c.uniq.size == 1
+    end
+  end
+
+  def player_of(combinations)
+    combinations.map(&:first).reject(&:blank?).first
   end
 end
