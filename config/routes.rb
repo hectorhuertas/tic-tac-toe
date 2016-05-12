@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      get '/games/new', to: 'games#new'
+      resources :games, only:[:create]
     end
   end
 end

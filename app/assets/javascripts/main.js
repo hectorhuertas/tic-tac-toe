@@ -8,7 +8,7 @@ function playTurn(e) {
 }
 
 function startGame(e) {
-  $.get('/api/v1/games/new')
+  $.post('/api/v1/games', {game: {size:3}})
    .then(renderBoard);
 }
 

@@ -3,7 +3,7 @@ require 'test_helper'
 class GameCreationTest < ActionDispatch::IntegrationTest
   test "Game is created" do
     size = 4;
-    get "/api/v1/games/new?size=#{size}"
+    post "/api/v1/games", game:{size:size}
 
     json = JSON.parse(response.body)
     game = Game.last

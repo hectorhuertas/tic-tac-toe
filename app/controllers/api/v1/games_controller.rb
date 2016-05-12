@@ -1,5 +1,10 @@
 class Api::V1::GamesController < Api::ApiController
-  def new
-    render json: Game.create(size: params[:size])
+  def create
+    render json: Game.create(game_params)
   end
+
+  private
+    def game_params
+      params.require(:game).permit(:size)
+    end
 end
