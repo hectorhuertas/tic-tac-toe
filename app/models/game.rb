@@ -11,12 +11,12 @@ class Game < ActiveRecord::Base
 
   def play(cell)
     board[cell] = 'o'
-    # return score if game_over?
-    # check game end
+    save && game_over || ai_play
+  end
+
+  def ai_play
     ai_move = available.sample
     board[ai_move] = 'x'
-    # check game end
-
     save && {cell: ai_move}
   end
 
@@ -24,8 +24,8 @@ class Game < ActiveRecord::Base
     board.select{|k,v| v==""}.keys
   end
 
-  def game_over?
-    board.flatten.select {|i| i==""}.empty?
+  def game_over
+    {over: score} if score
   end
 
   def score
@@ -37,7 +37,7 @@ class Game < ActiveRecord::Base
   end
 
   def player_score
-    case player_of(winning(combinations))
+    case winner
     when "o" then  1
     when "x" then -1
     end
@@ -49,11 +49,11 @@ class Game < ActiveRecord::Base
     end
   end
 
-  def winning(combinations)
+  def winning_combinations
     combinations.select { |c| c.uniq.size == 1 }
   end
 
-  def player_of(combinations)
-    combinations.map(&:first).reject(&:blank?).first
+  def winner
+    winning_combinations.map(&:first).reject(&:blank?).first
   end
 end
