@@ -6,7 +6,7 @@ $(document).ready(function () {
 function playTurn(e) {
   $cell = $(e.target).closest('td');
   $cell.empty().append('<i class="fa fa-circle-o fa-5x">');
-  $.get('/api/v1/games/' + $('.board').attr('id') + '/play', {cell:'01'})
+  $.get('/api/v1/games/' + $('.board').attr('id') + '/play', {cell:$cell.attr('id')})
    .then(updateBoard);
 }
 

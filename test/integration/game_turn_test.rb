@@ -9,6 +9,9 @@ class GameTurnTest < ActionDispatch::IntegrationTest
     json = JSON.parse(response.body)
 
     assert json['cell']
-    assert false, "Incomplete test"
+  end
+
+  test 'Game returns score when game is over' do
+    skip
   end
 end

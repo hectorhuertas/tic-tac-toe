@@ -1,28 +1,27 @@
 class Game < ActiveRecord::Base
   after_validation :create_board
-  serialize :board, Array
+  serialize :board, Hash
   validates :size, inclusion: { in: [3,4,5] }
 
   def create_board
     size.times do |i|
-      column = []
-      size.times { |i| column << "" }
-      board << column
+      size.times { |j| board["#{i}#{j}"] ||= "" }
     end
   end
 
   def play(cell)
-    x = cell[0].to_i
-    y = cell[1].to_i
-    board[x][y] = 'o'
-    return score if game_over?
-    # # over || playAI
-    # over || ai
-    # # update board
+    board[cell] = 'o'
+    # return score if game_over?
     # check game end
-    # play ai
+    ai_move = available.sample
+    board[ai_move] = 'x'
     # check game end
-    {cell:'22'}
+
+    save && {cell: ai_move}
+  end
+
+  def available
+    board.select{|k,v| v==""}.keys
   end
 
   def game_over?
