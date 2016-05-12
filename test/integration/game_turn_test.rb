@@ -8,7 +8,7 @@ class GameTurnTest < ActionDispatch::IntegrationTest
 
     json = JSON.parse(response.body)
 
-    assert_equal json['cell'], "22"
-    assert_equal true, "Incomplete test"
+    assert json['cell']
+    assert false, "Incomplete test"
   end
 end
