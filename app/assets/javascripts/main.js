@@ -4,7 +4,14 @@ $(document).ready(function () {
 });
 
 function playTurn(e) {
-  $(e.target).closest('td').empty().append('<i class="fa fa-circle-o fa-5x">');
+  $cell = $(e.target).closest('td');
+  $cell.empty().append('<i class="fa fa-circle-o fa-5x">');
+  $.get('/api/v1/games/' + $('.board').attr('id') + '/play', {cell:'01'})
+   .then(updateBoard);
+}
+
+function updateBoard(response) {
+  $('#' + response.cell).empty().append('<i class="fa fa-times fa-5x">');
 }
 
 function startGame(e) {
@@ -14,15 +21,16 @@ function startGame(e) {
 
 function renderBoard(e) {
   var size = e.game.size;
+  var id = e.game.id;
   var html = "";
 
   for (var i = 0; i < size; i++) {
     html = html + '<tr>';
     for (var j = 0; j < size; j++) {
-      html = html + '<td><i style="visibility:hidden" class="fa fa-circle-o fa-5x"></td>';
+      html = html + '<td id="' + i + j + '"><i style="visibility:hidden" class="fa fa-circle-o fa-5x"></td>';
     }
 
     html = html + '</tr>';
   }
-  $('#board').empty().append(html);
+  $('.board').attr('id', id).empty().append(html);
 }
