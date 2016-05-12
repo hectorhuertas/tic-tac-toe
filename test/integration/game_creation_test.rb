@@ -1,13 +1,15 @@
 require 'test_helper'
 
 class GameCreationTest < ActionDispatch::IntegrationTest
-  test "game is created" do
-    get '/api/v1/games/new?size=3'
+  test "Game is created" do
+    size = 4;
+    get "/api/v1/games/new?size=#{size}"
 
     json = JSON.parse(response.body)
     game = Game.last
 
-    assert_equal json['game']['size'], game.size
-    assert_equal json['game']['id'], game.id
+    assert_equal size, json['game']['size']
+    assert_equal size, game.size
+    assert_equal game.id, json['game']['id']
   end
 end
