@@ -29,19 +29,28 @@ class Game < ActiveRecord::Base
   end
 
   def score
-    player_of(winning(combinations))
+    draw || player_score
+  end
+
+  def draw
+    board.all?{|k,v| v.present?} && 0
+  end
+
+  def player_score
+    case player_of(winning(combinations))
+    when "o" then  1
+    when "x" then -1
+    end
   end
 
   def combinations
     Board.win_combinations(size).map do |c|
-      c.map{|cell|board[cell]}
+      c.map{ |cell| board[cell] }
     end
   end
 
   def winning(combinations)
-    combinations.select do |c|
-      c.uniq.size == 1
-    end
+    combinations.select { |c| c.uniq.size == 1 }
   end
 
   def player_of(combinations)

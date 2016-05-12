@@ -23,13 +23,73 @@ class GameTest < ActiveSupport::TestCase
     assert_equal board, game.board
   end
 
-  test "Score is calculated" do
-    game = Game.create(size:4)
+  test "Score is nil while game is not over" do
+    game = Game.create(size:3)
+
+    refute game.score
+
     game.play('00')
-    game.play('01')
-    game.play('02')
+    game.play('21')
+
+    refute game.score
+  end
+
+  test "Score is 1 when player wins" do
+    game = Game.create(size:3)
+
+    game.play('00')
+    game.play('10')
+    game.play('20')
+
+    assert_equal game.score, 1
+  end
+
+  test "Score is 1 when player wins with different combination" do
+    game = Game.create(size:3)
+
+    game.play('20')
+    game.play('21')
+    game.play('22')
+
+    assert_equal game.score, 1
+  end
+
+  test "Score is 1 when player wins with diagonal combination" do
+    game = Game.create(size:3)
+
+    game.play('00')
+    game.play('11')
+    game.play('22')
+
+    assert_equal game.score, 1
+  end
+
+  test "Score is 1 when player wins with different diagonal" do
+    game = Game.create(size:4)
+
+    game.play('30')
+    game.play('21')
+    game.play('12')
     game.play('03')
 
-    assert_equal game.score, 'bob'
+    assert_equal game.score, 1
+  end
+
+  test "Score is -1 when ai wins" do
+    game = Game.create(size:3)
+
+    game.board['00'] = "x"
+    game.board['01'] = "x"
+    game.board['02'] = "x"
+
+    assert_equal game.score, -1
+  end
+
+  test "Score is o when draw" do
+    game = Game.create(size:3)
+
+    game.board.each { |k,v| game.board[k] = "x" }
+
+    assert_equal game.score, 0
   end
 end
