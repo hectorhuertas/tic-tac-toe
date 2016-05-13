@@ -15,46 +15,17 @@ class Game < ActiveRecord::Base
   end
 
   def ai_play
-    ai_turn = {cell: available.sample}
+    ai_turn = {cell: Turn.new(board, 'x').best_move}
     board[ai_turn[:cell]] = 'x'
     ai_turn[:over] = score if score
     save && ai_turn
   end
 
-  def available
-    board.select{|k,v| v==""}.keys
-  end
-
-  def game_over(ai_move = nil)
+  def game_over
     {over: score} if score
   end
 
   def score
-    player_score || draw
-  end
-
-  def draw
-    board.all?{|k,v| v.present?} && 0
-  end
-
-  def player_score
-    case winner
-    when "o" then  1
-    when "x" then -1
-    end
-  end
-
-  def combinations
-    Board.win_combinations(size).map do |c|
-      c.map{ |cell| board[cell] }
-    end
-  end
-
-  def winning_combinations
-    combinations.select { |c| c.uniq.size == 1 }
-  end
-
-  def winner
-    winning_combinations.map(&:first).reject(&:blank?).first
+    Score.new.of(board)
   end
 end
