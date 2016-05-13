@@ -3,14 +3,15 @@ class Score
 
   def of(board)
     @board = board
-    player_score || draw
+    score || draw
   end
 
-  def player_score
-    case winner
-    when "o" then  1
-    when "x" then -1
-    end
+  def score
+    winner && (winner=="o" ? 10 - circles : circles - 10)
+  end
+
+  def circles
+    board.count {|_, move| move=="o"}
   end
 
   def draw
@@ -26,6 +27,7 @@ class Score
   end
 
   def combinations
+    # have board include a key with its own size
     Board.win_combinations(3).map do |c|
       c.map{ |cell| board[cell] }
     end
