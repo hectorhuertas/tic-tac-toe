@@ -14,7 +14,31 @@ class Game < ActiveRecord::Base
     save && game_over || ai_play
   end
 
+  def best_move
+    b = free(board).max_by do |move|
+      move
+    end
+    Turn.new(board).best_move('x')
+    #  binding.pry
+    #  b
+  end
+
+  def free(board)
+    board.select{|k,v| v==""}.keys
+  end
+
+  def deep_score(player, cell)
+    board[cell] = player
+    score || deep_score(other(player), cell)
+  end
+
+  def other(player)
+    player === 'o' ? 'x' : 'o'
+  end
+
   def ai_play
+    # ai_turn = {cell: best_move(board)}
+    # ai_turn = {cell: Turn.new(board).best_move('x')}
     ai_turn = {cell: available.sample}
     board[ai_turn[:cell]] = 'x'
     ai_turn[:over] = score if score
