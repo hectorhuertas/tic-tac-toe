@@ -39,7 +39,7 @@ class GameTurnTest < ActionDispatch::IntegrationTest
 
     json = JSON.parse(response.body)
 
-    assert_equal json['over'], 1
+    assert json['over'] > 0
   end
 
   test 'Game returns result when game is over by ai victory' do
@@ -53,6 +53,6 @@ class GameTurnTest < ActionDispatch::IntegrationTest
 
     json = JSON.parse(response.body)
 
-    assert_equal json['over'], -1
+    assert json['over'] < 0
   end
 end

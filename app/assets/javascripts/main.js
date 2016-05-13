@@ -16,10 +16,12 @@ function updateGame(response) {
 
 function gameOver(result) {
   var msg;
-  switch (result) {
-    case  1: msg = "Circle wins!"; break;
-    case  0: msg = "Draw"        ; break;
-    case -1: msg = "Cross wins!" ; break;
+  if (result > 0) {
+    msg = "Circle wins!";
+  } else if (result < 0) {
+    msg = "Cross wins!";
+  } else if (result === 0){
+    msg = "Draw";
   }
   $('.board').empty().append('<td class="display-1">' + msg + '</td>');
 }
