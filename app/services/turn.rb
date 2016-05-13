@@ -7,8 +7,9 @@ class Turn
 
   def best_move(player)
     available.min_by do |move|
-      # binding.pry
-      Score.new(board, move, player).player_score || 1000
+      new_board = board.dup
+      new_board[move] = player
+      Score.new.of(new_board) || 1000
     end
   end
 

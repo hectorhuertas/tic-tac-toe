@@ -15,12 +15,7 @@ class Game < ActiveRecord::Base
   end
 
   def best_move
-    b = free(board).max_by do |move|
-      move
-    end
     Turn.new(board).best_move('x')
-    #  binding.pry
-    #  b
   end
 
   def free(board)
