@@ -23,79 +23,7 @@ class GameTest < ActiveSupport::TestCase
     assert_equal board, game.board
   end
 
-  test "Score is nil while game is not over" do
-    game = Game.create(size:3)
-
-    refute game.score
-
-    game.play('00')
-    game.play('21')
-
-    refute game.score
-  end
-
-  test "Score is 1 when player wins" do
-    game = Game.create(size:3)
-
-    game.play('00')
-    game.play('10')
-    game.play('20')
-
-    assert_equal game.score, 1
-  end
-
-  test "Score is 1 when player wins with different combination" do
-    game = Game.create(size:3)
-
-    game.play('20')
-    game.play('21')
-    game.play('22')
-
-    assert_equal game.score, 1
-  end
-
-  test "Score is 1 when player wins with diagonal combination" do
-    game = Game.create(size:3)
-
-    game.play('00')
-    game.play('11')
-    game.play('22')
-
-    assert_equal game.score, 1
-  end
-
-  test "Score is 1 when player wins with different diagonal" do
-    game = Game.create(size:4)
-
-    game.play('30')
-    game.play('21')
-    game.play('12')
-    game.play('03')
-
-    assert_equal game.score, 1
-  end
-
-  test "Score is -1 when ai wins" do
-    game = Game.create(size:3)
-
-    game.board['00'] = "x"
-    game.board['01'] = "x"
-    game.board['02'] = "x"
-
-    assert_equal game.score, -1
-  end
-
-  test "Score is 0 when draw" do
-    game = Game.create(size:3)
-
-    game.board = {"00"=>"o", "01"=>"o", "02"=>"x",
-                  "10"=>"x", "11"=>"o", "12"=>"o",
-                  "20"=>"o", "21"=>"x", "22"=>"x"}
-
-    assert_equal game.score, 0
-  end
-
-  test "Best move" do
+  test "AI best move with winning chance" do
     game = Game.create(size:3)
 
     game.board = {"00"=>"", "01"=>"o", "02"=>"x",
@@ -104,4 +32,25 @@ class GameTest < ActiveSupport::TestCase
 
     assert_equal "12", game.best_move
   end
+
+  test "AI best move for draw (requires higher cell)" do
+    game = Game.create(size:3)
+
+    game.board = {"00"=>"", "01"=>"o", "02"=>"x",
+                  "10"=>"", "11"=>"o", "12"=>"o",
+                  "20"=>"o", "21"=>"x", "22"=>"x"}
+
+    assert_equal "10", game.best_move
+  end
+
+  test "AI best move for draw with other setup (requires lower cell)" do
+    game = Game.create(size:3)
+
+    game.board = {"00"=>"x", "01"=>"o", "02"=>"x",
+                  "10"=>"o", "11"=>"o", "12"=>"",
+                  "20"=>"o", "21"=>"x", "22"=>""}
+
+    assert_equal "12", game.best_move
+  end
+
 end

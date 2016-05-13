@@ -15,7 +15,7 @@ class Game < ActiveRecord::Base
   end
 
   def best_move
-    Turn.new(board).best_move('x')
+    Turn.new(board, 'x').best_move
   end
 
   def free(board)
@@ -32,9 +32,9 @@ class Game < ActiveRecord::Base
   end
 
   def ai_play
-    # ai_turn = {cell: best_move(board)}
+    ai_turn = {cell: best_move}
     # ai_turn = {cell: Turn.new(board).best_move('x')}
-    ai_turn = {cell: available.sample}
+    # ai_turn = {cell: available.sample}
     board[ai_turn[:cell]] = 'x'
     ai_turn[:over] = score if score
     save && ai_turn
